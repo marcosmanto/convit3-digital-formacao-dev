@@ -1,9 +1,25 @@
-import { eventos } from "core";
-import Image from "next/image";
-import Link from "next/link";
-import QRCode from "react-qr-code";
+'use client';
+import useAPI from '@/data/hooks/useAPI';
+import { Evento } from 'core';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import QRCode from 'react-qr-code';
 
-export default function PaginaEventos() {
+export default function PaginaEventos(props: any) {
+  const path: string = '/eventos';
+  const { httpGet } = useAPI();
+  const [eventos, setEventos] = useState<Evento[]>([]);
+
+  //carrega todos eventos do DB
+  const obterEventos = useCallback(async () => {
+    setEventos(await httpGet('/eventos'));
+  }, [httpGet]);
+
+  useEffect(() => {
+    obterEventos();
+  }, [obterEventos]);
+
   return (
     <div className="grid grid-cols-3 gap-5">
       {eventos.map((evento) => (

@@ -20,11 +20,13 @@ export default function PaginaAdminEvento(props: any) {
       return total + convidado.qtdeAcompanhantes + 1;
     }, 0) ?? 0;
 
+  // carrega do mock de dados
   function carregarEvento() {
     const evento = eventos.find((ev) => ev.id === id && ev.senha === senha);
     setEvento(evento ?? null);
   }
 
+  //carrega do servidor de banco de dados
   const obterEvento = useCallback(async () => {
     if (!id || !senha) return;
     const evento = await httpPost('/eventos/acessar', { id, senha });
